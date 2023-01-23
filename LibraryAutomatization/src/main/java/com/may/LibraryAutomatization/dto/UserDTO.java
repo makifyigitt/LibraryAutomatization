@@ -1,12 +1,11 @@
 package com.may.LibraryAutomatization.dto;
 
-import com.may.LibraryAutomatization.model.user.Address;
-import com.may.LibraryAutomatization.model.user.Email;
-import com.may.LibraryAutomatization.model.user.PhoneNumber;
+
 import com.may.LibraryAutomatization.model.user.User;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class UserDTO {
@@ -15,9 +14,9 @@ public class UserDTO {
     private String surname;
     private int status;
 
-    private List<Email> emailList;
-    private List<Address> addressList;
-    private List<PhoneNumber> phoneNumberList;
+    private List<EmailDTO> emailDTO;
+    private List<AddressDTO> addressList;
+    private List<PhoneNumberDTO> phoneNumberList;
 
 
     public UserDTO(User user){
@@ -25,8 +24,17 @@ public class UserDTO {
         this.name = user.getName();
         this.surname = user.getSurname();
         this.status = user.getStatus();
-        this.emailList = user.getEmails();
-        this.addressList = user.getAddresses();
-        this.phoneNumberList = user.getPhoneNumbers();
+        this.emailDTO = user.getEmails()
+                .stream()
+                .map(EmailDTO::new)
+                .collect(Collectors.toList());
+        this.addressList = user.getAddresses()
+                .stream()
+                .map(AddressDTO::new)
+                .collect(Collectors.toList());
+        this.phoneNumberList = user.getPhoneNumbers()
+                .stream()
+                .map(PhoneNumberDTO::new)
+                .collect(Collectors.toList());
     }
 }

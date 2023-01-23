@@ -9,17 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class BaseResponse {
 
     @JsonView(View.Base.class)
-    private int response =-1;
-    private int errorCode = 0;
-    private String message = "Successfuly";
-
-    public BaseResponse(int response, int errorCode, String message) {
-        this.response = response;
-        this.errorCode = errorCode;
-        this.message = message;
-    }
+   private String message;
 }

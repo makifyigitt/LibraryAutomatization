@@ -1,4 +1,5 @@
 package com.may.LibraryAutomatization.model.user;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
@@ -36,6 +37,7 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "status")
     private int status=1;
+
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Email> emails = new ArrayList<Email>();

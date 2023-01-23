@@ -16,13 +16,13 @@ public class Email implements Serializable {
     private int id;
 
     @NotNull
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "info_type_id")
+    @Column(name = "info_type")
+    @Enumerated(EnumType.STRING)
     private InfoType infoType;
 
     @NotNull

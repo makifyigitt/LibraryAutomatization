@@ -28,7 +28,7 @@ public class UserService {
         return userList.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
-    public User findUserById(int id){
+    protected User findUserById(int id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUN_EXCEPTATION));
     }
@@ -76,4 +76,9 @@ public class UserService {
     }
 
 
+    public void toMakeActiveUser(int id) {
+        User inDB= findUserById(id);
+        inDB.setStatus(1);
+        userRepository.save(inDB);
+    }
 }
