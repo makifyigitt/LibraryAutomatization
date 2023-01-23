@@ -13,11 +13,11 @@ public class UserUpdateDTO {
     private String name;
     @NotNull
     private String surname;
-    @NotEmpty
+    //@NotEmpty
     private Email email;
-    @NotEmpty
+    //@NotEmpty
     private PhoneNumber phoneNumber;
-    @NotEmpty
+    //@NotEmpty
     private Address address;
 
 

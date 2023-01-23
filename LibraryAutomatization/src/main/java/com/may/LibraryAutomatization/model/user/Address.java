@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "address")
-@AllArgsConstructor
 public class Address implements Serializable {
     @Id
     @Column(name = "id")
@@ -21,8 +20,9 @@ public class Address implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "info_type_id")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "info_type")
     private InfoType infoType;
 
     @NotNull

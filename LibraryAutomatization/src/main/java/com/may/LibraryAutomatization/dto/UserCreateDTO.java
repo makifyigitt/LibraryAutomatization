@@ -14,11 +14,11 @@ public class UserCreateDTO {
     @NotBlank
     private String surname;
     private int status = 1;
-    @NotNull
+//    @NotNull
     private Email email;
-    @NotNull
+//    @NotNull
     private PhoneNumber phoneNumber;
-    @NotNull
+//    @NotNull
     private Address address;
 
 }

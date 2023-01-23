@@ -1,16 +1,28 @@
 package com.may.LibraryAutomatization.model.user;
 
-public enum InfoTypeE {
+import jakarta.persistence.Entity;
 
-    HOME(1,"home type"),
-    BUSINIESS(2,"businiess type"),
-    OTHERS(3,"others")
+
+public enum InfoType {
+
+    home(1,"Home type"),
+    bussines(2,"Business type"),
+    others(3,"Others types"),
     ;
 
     private final int typeId;
-    private final String typeDes;
+    private final String typeDescription;
 
-    ErrorCode(int errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+    InfoType(int typeId,String typeDescription) {
+        this.typeId = typeId;
+        this.typeDescription = typeDescription;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public String getTypeDescription() {
+        return typeDescription;
+    }
 }
