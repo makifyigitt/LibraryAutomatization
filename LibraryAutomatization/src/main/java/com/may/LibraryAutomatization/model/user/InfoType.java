@@ -1,39 +1,16 @@
 package com.may.LibraryAutomatization.model.user;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+public enum InfoTypeE {
 
-import java.io.Serializable;
-import java.util.ArrayList;
+    HOME(1,"home type"),
+    BUSINIESS(2,"businiess type"),
+    OTHERS(3,"others")
+    ;
 
-import java.util.List;
+    private final int typeId;
+    private final String typeDes;
 
-
-@Data
-@Entity
-@Table(name = "info_type")
-public class InfoType implements Serializable {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @NotNull
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "description")
-    private String description;
-
-    @OneToMany(mappedBy = "infoType",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Email> emails = new ArrayList<Email>();
-
-    @OneToMany(mappedBy = "infoType",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<PhoneNumber> phoneNumbers = new ArrayList<PhoneNumber>();
-
-    @OneToMany(mappedBy = "infoType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Address> addresses = new ArrayList<Address>();
-
-
+    ErrorCode(int errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
 }
