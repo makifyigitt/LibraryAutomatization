@@ -1,27 +1,24 @@
 package com.may.LibraryAutomatization.model.blacklist;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+public enum BlackListType {
+    late_hand_over(1,"due to late delivery"),
+    damage_the_materials(2,"damaging the materials"),
+    others(3,"others"),
+    ;
 
-import java.io.Serializable;
+    private final int typeId;
+    private final String typeDescription;
 
-@Data
-@Entity
-@Table(name = "blacklist_type")
-public class BlackListType implements Serializable {
+    BlackListType(int typeId,String typeDescription) {
+        this.typeId = typeId;
+        this.typeDescription = typeDescription;
+    }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    public int getTypeId() {
+        return typeId;
+    }
 
-    @NotNull
-    @Column(name = "type")
-    private String type;
-
-    @Size(max = 255)
-    @Column(name = "description")
-    private String description;
+    public String getTypeDescription() {
+        return typeDescription;
+    }
 }

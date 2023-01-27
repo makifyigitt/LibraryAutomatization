@@ -10,6 +10,7 @@ import com.may.LibraryAutomatization.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,21 +24,28 @@ public class BookService {
 
     public List<BookDTO> getAllBooks() {
         List<Book>inDB =bookRepository.findAll();
-        return inDB.stream().map(BookDTO::new).collect(Collectors.toList());
+        return inDB.stream()
+                .map(BookDTO::new)
+                .collect(Collectors.toList());
     }
 
 
-    public Book findById(int id) {
+    protected Book findById(int id) {
         return bookRepository.findById(id)
-                .orElseThrow(()-> new BookNotFoundException(ErrorCode.BOOK_NOT_FOUN_EXCEPTATION));
+                .orElseThrow(()-> new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND_EXCEPTION));
+    }
+
+    public BookDTO getById(int id) {
+        return new BookDTO(findById(id));
     }
 
 
-    public Book updateBook(int id, BookUpdateDTO bookUpdateDTO) {
+
+    public void updateBook(int id, int totalStock, int availableStock) {
         Book inDB = findById(id);
-        inDB.setTotalStock(bookUpdateDTO.getTotalStock());
-        inDB.setAvailableStock(bookUpdateDTO.getAvailableStock());
-        return bookRepository.save(inDB);
+        inDB.setTotalStock(totalStock);
+        inDB.setAvailableStock(availableStock);
+        bookRepository.save(inDB);
     }
 
 
@@ -53,19 +61,25 @@ public class BookService {
 
 
     public void deleteBook(int id) {
-        Book inDB = findById(id); // to control id does not exist
+        Book inDB = findById(id);
         bookRepository.delete(inDB);
     }
 
-
-    public BookDTO getByIsbnno(String isbnno) {
-        if(bookRepository.findByIsbnno(isbnno)==null){
-            throw new BookNotFoundException(ErrorCode.BOOK_NOT_FOUN_EXCEPTATION);
-        }
-        else{
-            Book inDB = bookRepository.findByIsbnno(isbnno);
-            return new BookDTO(inDB);
-        }
+    public void deleteBook(String isbnno){
+        Book inDB = findByIsbnno(isbnno);
+        bookRepository.delete(inDB);
     }
 
+    protected Book findByIsbnno(String isbnno){
+        return bookRepository.findByIsbnno(isbnno)
+                .orElseThrow(()-> new BookNotFoundException(ErrorCode.BOOK_NOT_FOUND_EXCEPTION));
+    }
+
+    public BookDTO getByIsbnno(String isbnno) {
+            return new BookDTO(findByIsbnno(isbnno));
+        }
+
+
 }
+
+

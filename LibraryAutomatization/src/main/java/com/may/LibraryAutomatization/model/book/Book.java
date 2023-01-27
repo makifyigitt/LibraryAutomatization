@@ -1,11 +1,14 @@
 package com.may.LibraryAutomatization.model.book;
 
+import com.may.LibraryAutomatization.model.Reservation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -43,5 +46,6 @@ public class Book implements Serializable {
     @Column(name = "available_stock")
     private int availableStock = totalStock; //sor
 
-
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Reservation> reservationList = new ArrayList<Reservation>();
 }

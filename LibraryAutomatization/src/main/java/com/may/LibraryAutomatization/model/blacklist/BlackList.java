@@ -1,30 +1,42 @@
 package com.may.LibraryAutomatization.model.blacklist;
 
+import com.may.LibraryAutomatization.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "blacklist")
 public class BlackList implements Serializable {
+
+    public BlackList() {
+    }
+
+    public BlackList(User user, BlackListType blackListType) {
+        this.user = user;
+        this.blackListType = blackListType;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
-    @NotNull
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
-    @Column(name = "blacklist_type")
-    private int blackListType;
+    @Column(name = "black_list_type")
+    @Enumerated(EnumType.STRING)
+    private BlackListType blackListType;
 
-    @Column(name = "status")
-    private int status;
+    @Column(name = "date")
+    private LocalDate date;
 
 
 

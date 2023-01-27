@@ -3,7 +3,6 @@ package com.may.LibraryAutomatization.dto;
 import com.may.LibraryAutomatization.model.user.Address;
 import com.may.LibraryAutomatization.model.user.Email;
 import com.may.LibraryAutomatization.model.user.PhoneNumber;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

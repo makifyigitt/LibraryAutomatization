@@ -44,8 +44,8 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public BaseResponse deleteUser(@PathVariable("id") int id){
-        userService.deleteUser(id);
+    public BaseResponse inactivateUser(@PathVariable("id") int id){
+        userService.inactivateUser(id);
         return new BaseResponse("Passive delete successfully");
     }
 

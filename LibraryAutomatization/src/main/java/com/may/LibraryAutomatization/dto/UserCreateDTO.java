@@ -5,6 +5,7 @@ import com.may.LibraryAutomatization.model.user.Email;
 import com.may.LibraryAutomatization.model.user.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data

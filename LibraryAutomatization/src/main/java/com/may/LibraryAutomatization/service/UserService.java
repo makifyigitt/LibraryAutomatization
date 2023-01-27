@@ -5,10 +5,13 @@ import com.may.LibraryAutomatization.core.exceptions.UserNotFoundException;
 import com.may.LibraryAutomatization.dto.UserCreateDTO;
 import com.may.LibraryAutomatization.dto.UserDTO;
 import com.may.LibraryAutomatization.dto.UserUpdateDTO;
+import com.may.LibraryAutomatization.model.blacklist.BlackList;
+import com.may.LibraryAutomatization.model.blacklist.BlackListType;
 import com.may.LibraryAutomatization.model.user.User;
 import com.may.LibraryAutomatization.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,17 +34,27 @@ public class UserService {
 
     protected User findUserById(int id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUN_EXCEPTATION));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND_EXCEPTION));
     }
 
     public UserDTO getUserById(int id) {
         return new UserDTO(findUserById(id));
     }
 
+    public void createUser(UserCreateDTO userCreateDTO) {
+        User newUser = new User();
+        newUser.setName(userCreateDTO.getName());
+        newUser.setSurname(userCreateDTO.getSurname());
+        newUser.setStatus(userCreateDTO.getStatus());
+        newUser.getEmails().add(userCreateDTO.getEmail());
+        newUser.getAddresses().add(userCreateDTO.getAddress());
+        newUser.getPhoneNumbers().add(userCreateDTO.getPhoneNumber());
+        userRepository.save(newUser);
+    }
 
     public void updateUserById(int id, UserUpdateDTO userUpdateDTO) {
         User inDB = userRepository.findById(id)
-                .orElseThrow(()->new UserNotFoundException(ErrorCode.USER_NOT_FOUN_EXCEPTATION));
+                .orElseThrow(()->new UserNotFoundException(ErrorCode.USER_NOT_FOUND_EXCEPTION));
         inDB.setName(userUpdateDTO.getName());
         inDB.setSurname(userUpdateDTO.getSurname());
         inDB.getEmails().add(userUpdateDTO.getEmail());
@@ -56,25 +70,12 @@ public class UserService {
     }
 
 
-    public void deleteUser(int id) { //it is a soft delete.
+    public void inactivateUser(int id) { //it is a soft delete.
         User inDB = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUN_EXCEPTATION));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND_EXCEPTION));
         inDB.setStatus(0);
         userRepository.save(inDB);
     }
-
-
-    public void createUser(UserCreateDTO userCreateDTO) {
-        User newUser = new User();
-        newUser.setName(userCreateDTO.getName());
-        newUser.setSurname(userCreateDTO.getSurname());
-        newUser.setStatus(userCreateDTO.getStatus());
-        newUser.getEmails().add(userCreateDTO.getEmail());
-        newUser.getAddresses().add(userCreateDTO.getAddress());
-        newUser.getPhoneNumbers().add(userCreateDTO.getPhoneNumber());
-        userRepository.save(newUser);
-    }
-
 
     public void toMakeActiveUser(int id) {
         User inDB= findUserById(id);
