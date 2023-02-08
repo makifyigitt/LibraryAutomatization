@@ -9,7 +9,5 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book,Integer> {
 
-    @Query("Select c From Book c where (c.isbnno =: isbnno) or (c.isbnno is null)")
-    Optional<Book> findByIsbnno(@Param("isbnno") String isbnno);
-
+    Optional<Book> findByIsbnno(String isnno);
 }

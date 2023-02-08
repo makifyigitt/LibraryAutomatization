@@ -10,7 +10,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Data
+
 @Entity
 
 public class Reservation implements Serializable {
@@ -46,4 +46,60 @@ public class Reservation implements Serializable {
     private boolean giveBackStatus = false;
     @Column(name = "give_back_date")
     private LocalDate giveBackDate;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public LocalDate getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public boolean isGiveBackStatus() {
+        return giveBackStatus;
+    }
+
+    public void setGiveBackStatus(boolean giveBackStatus) {
+        this.giveBackStatus = giveBackStatus;
+    }
+
+    public LocalDate getGiveBackDate() {
+        return giveBackDate;
+    }
+
+    public void setGiveBackDate(LocalDate giveBackDate) {
+        this.giveBackDate = giveBackDate;
+    }
 }

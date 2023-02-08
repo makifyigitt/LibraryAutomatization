@@ -49,4 +49,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleReservationNotFoundExceptions(ReservationNotFoundException reservationNotFoundException){
         return new ResponseEntity<>(ErrorCode.BOOK_NOT_FOUND_EXCEPTION.getErrorMessage(),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(AuthorNotFoundException.class)
+    public final ResponseEntity<Object> handleAuthorNotFoundExceptions(ReservationNotFoundException authorNotFoundException){
+        return new ResponseEntity<>(ErrorCode.AUTHOR_NOT_FOUND_EXCEPTION.getErrorMessage(),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BlackListIsFull.class)
+    public final ResponseEntity<Object> handleBlackListNotFoundExceptions(BlackListIsFull blackListIsFull){
+        return new ResponseEntity<>(ErrorCode.BLACKLIST_IS_FULL.getErrorMessage(),HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
 }
