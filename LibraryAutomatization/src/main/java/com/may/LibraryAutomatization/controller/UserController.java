@@ -26,15 +26,20 @@ public class UserController {
     }
 
 
-    @GetMapping("{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id){
+    @GetMapping()
+    public ResponseEntity<UserDTO> getUserById(@RequestParam int id){
             return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PutMapping("/update/{id}")
-    public BaseResponse updateUserById(@PathVariable("id") int id,
-                                       @RequestBody @Valid UserUpdateDTO userUpdateDTO){
-        userService.updateUserById(id,userUpdateDTO);
+    @PostMapping("/create")
+    public BaseResponse createUser(@RequestBody @Valid UserCreateDTO userCreateDTO){
+        userService.createUser(userCreateDTO);
+        return new BaseResponse("user creation successfully");
+    }
+
+    @PutMapping("/update")
+    public BaseResponse updateUserById(@RequestBody @Valid UserUpdateDTO userUpdateDTO){
+        userService.updateUserById(userUpdateDTO);
         return new BaseResponse("Successfully");
     }
 
@@ -43,21 +48,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllActiveUsers());
     }
 
-    @DeleteMapping("/delete/{id}")
-    public BaseResponse inactivateUser(@PathVariable("id") int id){
+    @DeleteMapping("/delete")
+    public BaseResponse inactivateUser(@RequestParam int id){
         userService.inactivateUser(id);
         return new BaseResponse("Passive delete successfully");
     }
 
-    @PatchMapping("/active/{id}")
-    public BaseResponse toMakeActiveUser(@PathVariable("id") int id){
+    @PatchMapping("/active")
+    public BaseResponse toMakeActiveUser(@RequestParam int id){
         userService.toMakeActiveUser(id);
         return new BaseResponse("now this id: "+ id +" is active");
     }
-    @PostMapping("/create")
-    public BaseResponse createUser(UserCreateDTO userCreateDTO){
-        userService.createUser(userCreateDTO);
-        return new BaseResponse("user creation successfully");
-    }
-
 }

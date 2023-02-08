@@ -12,9 +12,10 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation,Integer> {
 
     @Query("Select c From Reservation c where c.giveBackStatus = false")
-    List<Reservation> getAllActiveReservations();
+    Optional<List<Reservation>> findAllActiveReservations();
 
-    @Query("select c from Reservation c where c.user =: user ")
-    Optional<List<Reservation>> findAllReservationsByUser(@Param("user")User user);
+    @Query("select c from Reservation c where c.user.id = :user ")
+    Optional<List<Reservation>> findAllReservationsByUser(@Param("user")int userId);
 
+    //TODO JOIN Lİ QUERY OLUŞTUR
 }

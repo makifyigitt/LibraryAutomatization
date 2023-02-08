@@ -8,10 +8,21 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+
+
 public class BaseResponse {
+    public BaseResponse(String message) {
+        this.message = message;
+    }
 
     @JsonView(View.Base.class)
    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

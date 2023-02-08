@@ -5,13 +5,13 @@ import com.may.LibraryAutomatization.core.exceptions.UserNotFoundException;
 import com.may.LibraryAutomatization.dto.UserCreateDTO;
 import com.may.LibraryAutomatization.dto.UserDTO;
 import com.may.LibraryAutomatization.dto.UserUpdateDTO;
-import com.may.LibraryAutomatization.model.blacklist.BlackList;
-import com.may.LibraryAutomatization.model.blacklist.BlackListType;
+import com.may.LibraryAutomatization.model.user.Address;
+import com.may.LibraryAutomatization.model.user.Email;
+import com.may.LibraryAutomatization.model.user.PhoneNumber;
 import com.may.LibraryAutomatization.model.user.User;
 import com.may.LibraryAutomatization.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,32 +41,48 @@ public class UserService {
         return new UserDTO(findUserById(id));
     }
 
+
     public void createUser(UserCreateDTO userCreateDTO) {
         User newUser = new User();
+        newUser.setUsername(userCreateDTO.getUserName());
+        newUser.setPassword(userCreateDTO.getPassword());
         newUser.setName(userCreateDTO.getName());
         newUser.setSurname(userCreateDTO.getSurname());
         newUser.setStatus(userCreateDTO.getStatus());
-        newUser.getEmails().add(userCreateDTO.getEmail());
-        newUser.getAddresses().add(userCreateDTO.getAddress());
-        newUser.getPhoneNumbers().add(userCreateDTO.getPhoneNumber());
+
+        Email email = new Email(newUser,userCreateDTO.getEmailType(),userCreateDTO.getEmail());
+        newUser.getEmails().add(email);
+
+        PhoneNumber phoneNumber = new PhoneNumber(newUser,userCreateDTO.getPhoneNumberType(),userCreateDTO.getPhoneNumber());
+        newUser.getPhoneNumbers().add(phoneNumber);
+
+        Address address = new Address(newUser,userCreateDTO.getAddressType(),userCreateDTO.getAddress());
+        newUser.getAddresses().add(address);
         userRepository.save(newUser);
     }
 
-    public void updateUserById(int id, UserUpdateDTO userUpdateDTO) {
-        User inDB = userRepository.findById(id)
-                .orElseThrow(()->new UserNotFoundException(ErrorCode.USER_NOT_FOUND_EXCEPTION));
+    public UserDTO updateUserById(UserUpdateDTO userUpdateDTO) {
+        User inDB = findUserById(userUpdateDTO.getUserId());
+
+        inDB.setUsername(userUpdateDTO.getUserName());
+        inDB.setPassword(userUpdateDTO.getPassword());
         inDB.setName(userUpdateDTO.getName());
         inDB.setSurname(userUpdateDTO.getSurname());
-        inDB.getEmails().add(userUpdateDTO.getEmail());
-        inDB.getAddresses().add(userUpdateDTO.getAddress());
-        inDB.getPhoneNumbers().add(userUpdateDTO.getPhoneNumber());
+        inDB.getEmails().add(new Email(inDB,userUpdateDTO.getEmailType(),userUpdateDTO.getEmail()));
+        inDB.getAddresses().add(new Address(inDB,userUpdateDTO.getAddressType(),userUpdateDTO.getAddress()));
+        inDB.getPhoneNumbers().add(new PhoneNumber(inDB,userUpdateDTO.getPhoneNumberType(),userUpdateDTO.getPhoneNumber()));
+
         userRepository.save(inDB);
+        return new UserDTO(inDB);
     }
 
 
     public List<UserDTO> getAllActiveUsers() {
         List<User> activeUserList = userRepository.getAllActiveUsers();
-        return activeUserList.stream().map(UserDTO::new).collect(Collectors.toList());
+        return activeUserList
+                .stream()
+                .map(UserDTO::new)
+                .collect(Collectors.toList());
     }
 
 

@@ -1,70 +1,61 @@
 package com.may.LibraryAutomatization.service;
 
-import com.may.LibraryAutomatization.core.exceptions.BlackListNotFoundException;
+import com.may.LibraryAutomatization.core.exceptions.BlackListIsFull;
 import com.may.LibraryAutomatization.core.exceptions.ErrorCode;
-import com.may.LibraryAutomatization.dto.BlackListDTO;
-
+import com.may.LibraryAutomatization.model.Reservation;
 import com.may.LibraryAutomatization.model.blacklist.BlackList;
-import com.may.LibraryAutomatization.model.blacklist.BlackListType;
 import com.may.LibraryAutomatization.model.user.User;
 import com.may.LibraryAutomatization.repository.BlackListRepository;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+@EnableScheduling
 @Service
 public class BlackListService {
 
-    private final BlackListRepository blackListRepository;
     private final UserService userService;
+    private final ReservationService reservationService;
+    private final BlackListRepository blackListRepository;
 
-    public BlackListService(BlackListRepository blackListRepository, UserService userService) {
-        this.blackListRepository = blackListRepository;
+    public BlackListService(UserService userService, ReservationService reservationService,
+                            BlackListRepository blackListRepository) {
         this.userService = userService;
+        this.reservationService = reservationService;
+        this.blackListRepository = blackListRepository;
     }
 
-    public List<BlackListDTO> getAllBlackLists(){
-        List<BlackList> blackLists = blackListRepository.findAll();
-        return blackLists
+    @Scheduled(cron="* * 0 * * *", zone="Europe/Istanbul")
+    public void controlTheBlackListStatus(){
+        List<Reservation> activeReservations = reservationService
+                .findAllActiveReservations()
                 .stream()
-                .map(BlackListDTO::new)
-                .collect(Collectors.toList());
+                .filter(p -> p.getExpiryDate().isBefore(LocalDate.now()))
+                .toList();
+
+        List<User> users = activeReservations.stream()
+                .map(Reservation::getUser)
+                .toList();
+        Optional.of(users).ifPresent(this::addToAllBlackLists);
+
     }
 
-    protected BlackList findById(int id){
-        return blackListRepository.findById(id)
-                .orElseThrow(() -> new BlackListNotFoundException(ErrorCode.BLACKLIST_NOT_FOUND_EXCEPTION));
-    }
 
-    public BlackListDTO getById(int id){
-        return new BlackListDTO(findById(id));
-    }
-
-    protected List<BlackList> findBlackListByUserId(int id){
-        return blackListRepository.findAllBlackListsByUser(userService.findUserById(id))
-                .orElseThrow(()-> new BlackListNotFoundException(ErrorCode.BLACKLIST_NOT_FOUND_EXCEPTION));
-    }
-
-    public List<BlackListDTO> getBlackListByUserId(int id){
-        return findBlackListByUserId(id)
-                .stream()
-                .map(BlackListDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public void create(User user, BlackListType blackListType){
-        if (findBlackListByUserId(user.getId()).size() < 3){
-            BlackList blackList = new BlackList(user,blackListType);
-            blackList.setDate(LocalDate.now());
-            blackListRepository.save(blackList);
-            System.out.println("The user is warned!! The reason for warning: " + blackListType.getTypeDescription());
-        }else { //to make user inactive
-            System.out.println("The user get warning 3 times. That is mean user temporarily banned.");
-            userService.inactivateUser(user.getId());
+    protected void addToAllBlackLists(List<User> users){
+        for (User user:users) {
+            if (user.getBlackList().size()<3){
+                blackListRepository.save(new BlackList(user));
+            }
+            else{
+                userService.inactivateUser(user.getId());
+                throw new BlackListIsFull(ErrorCode.BLACKLIST_IS_FULL,user);
+            }
         }
-
     }
+
 
 }

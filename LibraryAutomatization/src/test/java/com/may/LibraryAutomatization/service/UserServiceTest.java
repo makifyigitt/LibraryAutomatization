@@ -2,6 +2,10 @@ package com.may.LibraryAutomatization.service;
 
 import com.may.LibraryAutomatization.core.exceptions.UserNotFoundException;
 import com.may.LibraryAutomatization.dto.UserDTO;
+import com.may.LibraryAutomatization.dto.UserUpdateDTO;
+import com.may.LibraryAutomatization.model.user.Address;
+import com.may.LibraryAutomatization.model.user.Email;
+import com.may.LibraryAutomatization.model.user.PhoneNumber;
 import com.may.LibraryAutomatization.model.user.User;
 import com.may.LibraryAutomatization.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +48,8 @@ class UserServiceTest{
 
         assertEquals(result,userDTOList);
 
+        Mockito.verify(userRepository).findAll();
+
     }
 
     @Test
@@ -55,16 +61,20 @@ class UserServiceTest{
         User result = userService.findUserById(111);
 
         assertEquals(result,user);
+
     }
 
     @Test
     public void testFindUserById_whenUserIdDoesNotExist_shouldThrowUserNotFoundException(){
         Mockito.when(userRepository.findById(111)).thenReturn(Optional.empty());
         assertThrows(UserNotFoundException.class,()-> userService.findUserById(111));
+
+        Mockito.verify(userRepository).findById(111);
+
     }
 
     @Test
-    public void testGetUserById_whenUserIdExist_shouldReturnUser(){
+    public void testGetUserById_whenUserIdExist_shouldReturnUserDTO(){
         User user = new User(111,"name","surname",1, List.of(),List.of(),List.of(),List.of(),List.of());
         UserDTO userDTO = new UserDTO(user);
         Mockito.when(userRepository.findById(111)).thenReturn(Optional.of(user));
@@ -77,9 +87,30 @@ class UserServiceTest{
     @Test
     public void testGetUserById_whenUserIdDoesNotExist_shouldThrowUserNotFoundException(){
         Mockito.when(userRepository.findById(111)).thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class,()-> userService.getUserById(111));
+        assertThrows(UserNotFoundException.class,
+                ()-> userService.getUserById(111));
     }
 
 
+    @Test
+    public void testUpdateUserById_whenUserIdExist_shouldReturnUserDTO(){
+        int userId = 111;
+        Email email = new Email();
+        PhoneNumber phoneNumber = new PhoneNumber();
+        Address address = new Address();
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO(userId,"usename","password","name1","surname1","email",null,"phoneNumber",null,"address",null);
+        User user = new User(111,"name","surname",1,List.of(),List.of(),List.of(),List.of(),List.of());
+        User updatedUser = new User(111,"name1","surname1",1,List.of(email),List.of(phoneNumber),List.of(address),List.of(),List.of());
+        User savedUser = new User(111,"name1","surname1",1,List.of(email),List.of(phoneNumber),List.of(address),List.of(),List.of());
+        UserDTO userDTO = new UserDTO(savedUser);
+
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.save(updatedUser)).thenReturn(savedUser);
+
+        UserDTO result = userService.updateUserById(userUpdateDTO);
+
+        assertEquals(userDTO,result);
+
+    }
 
 }

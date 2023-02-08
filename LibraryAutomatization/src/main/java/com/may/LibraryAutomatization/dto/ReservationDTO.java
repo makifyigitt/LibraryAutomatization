@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
+
 public class ReservationDTO {
     private int id;
     private int userID;
@@ -23,5 +23,61 @@ public class ReservationDTO {
         this.expiryDate = reservation.getExpiryDate();
         this.giveBackStatus = reservation.isGiveBackStatus();
         this.giveBackDate = reservation.getGiveBackDate();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getBookID() {
+        return bookID;
+    }
+
+    public void setBookID(int bookID) {
+        this.bookID = bookID;
+    }
+
+    public LocalDate getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public boolean isGiveBackStatus() {
+        return giveBackStatus;
+    }
+
+    public void setGiveBackStatus(boolean giveBackStatus) {
+        this.giveBackStatus = giveBackStatus;
+    }
+
+    public LocalDate getGiveBackDate() {
+        return giveBackDate;
+    }
+
+    public void setGiveBackDate(LocalDate giveBackDate) {
+        this.giveBackDate = giveBackDate;
     }
 }

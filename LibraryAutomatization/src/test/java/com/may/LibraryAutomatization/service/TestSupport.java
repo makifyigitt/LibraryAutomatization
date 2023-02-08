@@ -15,17 +15,19 @@ import java.util.stream.IntStream;
 
 public class TestSupport {
 
-//    public static List<User> generateUserList(){
-//        return IntStream.range(0,5)
-//                .mapToObj(i -> new User(i,
-//                        "firstName"+i,
-//                        "lastName"+i,
-//                        new Random(2).nextInt(),
-//                        List.of(),
-//                        List.of(),
-//                        List.of()))
-//                .collect(Collectors.toList());
-//    }
+    public static List<User> generateUserList(){
+        return IntStream.range(0,5)
+                .mapToObj(i -> new User(i,
+                        "firstName"+i,
+                        "lastName"+i,
+                        new Random(2).nextInt(),
+                        List.of(),
+                        List.of(),
+                        List.of(),
+                        List.of(),
+                        List.of()))
+                .collect(Collectors.toList());
+    }
 
     public static List<UserDTO> generateUserDtoList(List<User> userList){
         return userList.stream().map(UserDTO::new).collect(Collectors.toList());

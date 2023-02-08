@@ -37,33 +37,34 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReservationDTO> getById(@PathVariable("id") int id){
+    @GetMapping()
+    public ResponseEntity<ReservationDTO> getById(@RequestParam int id){
         return ResponseEntity.ok(reservationService.getById(id));
     }
 
     @PostMapping("/create")
-    public BaseResponse createNewReservation(@RequestBody User user, @RequestBody Book book){
-        reservationService.createNewReservation(user,book);
+    public BaseResponse createNewReservation(@RequestParam int userId, @RequestParam int bookId){
+        reservationService.createNewReservation(userId,bookId);
 
         return new BaseResponse("Reservation created successfully");
     }
 
     @PatchMapping("/terminate")
-    public ResponseEntity<ReservationDTO> terminateReservation(int id){
+    public ResponseEntity<ReservationDTO> terminateReservation(@RequestParam int id){
         reservationService.terminateReservation(id);
         return ResponseEntity.ok(reservationService.getById(id));
     }
 
     @PatchMapping("/extend")
-    public BaseResponse extendReservationDate(int id){
+    public BaseResponse extendReservationDate(@RequestParam int id){
         reservationService.extendReservationDate(id);
         return new BaseResponse("Expiry date extend successfully. New expiry date: "
                 + reservationService.getById(id).getExpiryDate().toString());
     }
 
-//    public List<ReservationDTO> getReservationsByUserId(int id){
-//
-//    }
+    @GetMapping("/reservations")
+    public List<ReservationDTO> getReservationsByUserId(@RequestParam int userId){
+       return reservationService.getReservationsByUserId(userId);
+    }
 
 }

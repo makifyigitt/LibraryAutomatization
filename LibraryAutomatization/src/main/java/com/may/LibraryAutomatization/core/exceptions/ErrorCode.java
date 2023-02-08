@@ -6,7 +6,8 @@ public enum ErrorCode {
     USER_NOT_FOUND_EXCEPTION(1,"Kulanıcı bulunamadı"),
     BOOK_NOT_FOUND_EXCEPTION(2,"BOOK bulunamadı"),
     RESERVATION_NOT_FOUND_EXCEPTION(3,"Rezarvasyon bulunamadı"),
-    BLACKLIST_NOT_FOUND_EXCEPTION(4,"BlackList bulunamadı")
+    AUTHOR_NOT_FOUND_EXCEPTION(4,"Yazar bulunamadı, lütfen yazarı ekleyin"),
+    BLACKLIST_IS_FULL(5,"Kullanıcı black List sınırını aştığı için banlanmıştır")
     ;
 
     private final int errorCode;
