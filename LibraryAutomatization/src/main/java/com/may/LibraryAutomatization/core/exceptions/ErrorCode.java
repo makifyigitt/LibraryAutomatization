@@ -1,6 +1,6 @@
 package com.may.LibraryAutomatization.core.exceptions;
 
-import lombok.Setter;
+
 
 public enum ErrorCode {
     USER_NOT_FOUND_EXCEPTION(1,"Kulanıcı bulunamadı"),

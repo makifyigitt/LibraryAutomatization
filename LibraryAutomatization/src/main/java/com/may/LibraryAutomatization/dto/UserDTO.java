@@ -1,8 +1,7 @@
 package com.may.LibraryAutomatization.dto;
 
-
 import com.may.LibraryAutomatization.model.user.User;
-import lombok.Data;
+
 
 import java.util.List;
 import java.util.stream.Collectors;

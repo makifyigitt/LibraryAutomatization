@@ -1,7 +1,7 @@
 package com.may.LibraryAutomatization.dto;
 
 import com.may.LibraryAutomatization.model.blacklist.BlackList;
-import lombok.Data;
+
 
 import java.time.LocalDate;
 

@@ -1,5 +1,6 @@
 package com.may.LibraryAutomatization.service;
 
+
 import com.may.LibraryAutomatization.core.exceptions.ErrorCode;
 import com.may.LibraryAutomatization.core.exceptions.UserNotFoundException;
 import com.may.LibraryAutomatization.dto.UserCreateDTO;
@@ -10,6 +11,7 @@ import com.may.LibraryAutomatization.model.user.Email;
 import com.may.LibraryAutomatization.model.user.PhoneNumber;
 import com.may.LibraryAutomatization.model.user.User;
 import com.may.LibraryAutomatization.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;

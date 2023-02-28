@@ -2,8 +2,7 @@ package com.may.LibraryAutomatization.model.blacklist;
 
 import com.may.LibraryAutomatization.model.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,7 +24,7 @@ public class BlackList implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

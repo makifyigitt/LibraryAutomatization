@@ -16,6 +16,6 @@ public class BlackListIsFull extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return errorCode.getErrorMessage() + "User id: " + user.getId();
+        return errorCode.getErrorMessage() + " User id: " + user.getId();
     }
 }
