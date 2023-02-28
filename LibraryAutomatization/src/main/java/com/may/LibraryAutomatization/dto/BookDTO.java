@@ -3,7 +3,7 @@ package com.may.LibraryAutomatization.dto;
 import com.may.LibraryAutomatization.model.book.Author;
 import com.may.LibraryAutomatization.model.book.Book;
 import com.may.LibraryAutomatization.model.book.BookType;
-import lombok.Data;
+
 
 
 public class BookDTO {

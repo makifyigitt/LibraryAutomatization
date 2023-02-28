@@ -1,7 +1,7 @@
 package com.may.LibraryAutomatization.dto;
 
 import com.may.LibraryAutomatization.model.Reservation;
-import lombok.Data;
+
 
 import java.time.LocalDate;
 

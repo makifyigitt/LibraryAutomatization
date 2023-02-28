@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation,Integer> {
 
-    @Query("Select c From Reservation c where c.giveBackStatus = false")
+    @Query("Select c From Reservation c where c.user.status = 1 and c.giveBackStatus = false ")
     Optional<List<Reservation>> findAllActiveReservations();
 
     @Query("select c from Reservation c where c.user.id = :user ")

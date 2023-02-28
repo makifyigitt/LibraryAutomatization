@@ -4,8 +4,7 @@ import com.may.LibraryAutomatization.model.book.Book;
 import com.may.LibraryAutomatization.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 
 import java.io.Serializable;
 import java.time.LocalDate;

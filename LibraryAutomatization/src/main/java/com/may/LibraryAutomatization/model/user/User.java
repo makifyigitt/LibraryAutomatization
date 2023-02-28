@@ -5,12 +5,8 @@ import com.may.LibraryAutomatization.model.Reservation;
 import com.may.LibraryAutomatization.model.blacklist.BlackList;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.util.*;
@@ -126,7 +122,7 @@ public class User  { //implements UserDetails
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reservation> reservationList = new ArrayList<Reservation>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<BlackList> blackList = new ArrayList<BlackList>();
 
 //    @JsonIgnore
